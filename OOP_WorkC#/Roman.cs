@@ -92,25 +92,13 @@ namespace OOP_WorkC_
             return result;
         }
 
-        public override string ToString()
-        {
-            return ToRoman(IntValue);
-        }
+        public override string ToString() => ToRoman(IntValue);
 
-        public static Roman operator +(Roman _this, Roman other)
-        {
-            return new Roman(_this.IntValue + other.IntValue);
-        }
+        public static Roman operator +(Roman _this, Roman other) => new Roman(_this.IntValue + other.IntValue);
 
-        public static Roman operator -(Roman _this, Roman other)
-        {
-            return new Roman(_this.IntValue - other.IntValue);
-        }
+        public static Roman operator -(Roman _this, Roman other) => new Roman(_this.IntValue - other.IntValue);
 
-        public static Roman operator *(Roman _this, Roman other)
-        {
-            return new Roman(_this.IntValue * other.IntValue);
-        }
+        public static Roman operator *(Roman _this, Roman other) => new Roman(_this.IntValue * other.IntValue);
 
         public static Roman operator /(Roman _this, Roman other)
         {

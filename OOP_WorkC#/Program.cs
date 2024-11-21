@@ -31,5 +31,9 @@ Console.WriteLine(-(r4 - r1 + new Roman(1)).IntValue);
 Console.WriteLine(-r4.IntValue);
 
 
-Roman r8 = new("-XI");
-Console.WriteLine(r8);
+//Roman r8 = new("-XI");
+//Console.WriteLine(r8);
+
+Roman r9 = new(10);
+Roman r10 = new(2);
+Console.WriteLine((r10 / new Roman(0)).IntValue);
