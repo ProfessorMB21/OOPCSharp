@@ -5,7 +5,7 @@ using OOP_WorkC_;
 
 Roman r1 = new(10);     // X
 Roman r2 = new(2);     // XX
-Roman r3 = new("MI");  // 1001
+Roman r3 = new("-MI");  // 1001
 Roman r4 = new("XXIX"); // 29
 
 
@@ -36,4 +36,11 @@ Console.WriteLine(-r4.IntValue);
 
 Roman r9 = new(10);
 Roman r10 = new(2);
-Console.WriteLine((r10 / new Roman(0)).IntValue);
+Console.WriteLine($"div: {(new Roman("-XXX") / new Roman(-1)).IntValue}");
+Roman r11 = new("-IV");
+Roman r12 = new(2000);
+Roman r13 = r12 + r1;
+Console.WriteLine(r13);
+Console.WriteLine(r13.IntValue);
+Console.WriteLine(r11);
+Console.WriteLine(r12);

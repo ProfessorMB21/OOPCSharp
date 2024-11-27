@@ -51,33 +51,72 @@ namespace OOP_WorkC_
         {
             IntValue = FromRoman(val);
         }
+        /*
+        private int FromRoman(string roman)
+        {
+            roman = roman.ToUpper();
+            int sum = 0, prev = 0;
+            bool isNegative = false;
+
+            if (roman.StartsWith("-")) { isNegative = true; }
+            
+            foreach(char c in roman)
+            {
+                if (!romanToInt.ContainsKey(c) && c != '-')
+                {
+                    throw new Exception($"Invalid Roman character: {c}");
+                }
+                if (c != '-')
+                {
+                    int curr = romanToInt[c];
+                    sum += curr <= prev ? curr : curr - 2 * prev;
+                    prev = curr;
+                }
+            }
+            
+            if (isNegative) { sum = -sum; }
+            if (ToRoman(sum) != roman) { throw new Exception($"Invalid Roman numeral: {roman}"); }
+            return sum;
+        }
+        */
 
         private int FromRoman(string roman)
         {
             roman = roman.ToUpper();
             int sum = 0, prev = 0;
+            bool isNegative = false;
 
-            foreach(char c in roman)
+            if (roman.StartsWith("-")) { isNegative = true; }
+            if (isNegative)
             {
-                if (!romanToInt.ContainsKey(c))
+                for (int i = 1; i < roman.Length; i++)
                 {
-                    // bug here
-                    if (c == '-') { continue; }
-                    else { throw new Exception($"Invalid Roman character: {c}"); }
+                    if (!romanToInt.ContainsKey(roman[i])) { throw new Exception($"Invalid Roman character: {roman[i]}"); }
+                    int curr = romanToInt[roman[i]];
+                    sum += curr <= prev ? curr : curr - 2 * prev;
+                    prev = curr;
                 }
-
-                int curr = romanToInt[c];
-                sum += curr <= prev ? curr : curr - 2 * prev;
-                prev = curr;
+            } else
+            {
+                foreach (char c in roman)
+                {
+                    if (!romanToInt.ContainsKey(c) && c != '-')
+                    {
+                        throw new Exception($"Invalid Roman character: {c}");
+                    }
+                    int curr = romanToInt[c];
+                    sum += curr <= prev ? curr : curr - 2 * prev;
+                    prev = curr;
+                }
             }
-
+            if (isNegative) { sum = -sum; }
             if (ToRoman(sum) != roman) { throw new Exception($"Invalid Roman numeral: {roman}"); }
             return sum;
         }
 
         private string ToRoman(int num)
         {
-            if (num == 0) return "N";
+            if (num == 0) return "Nil";
             if (num < 0) return $"-{ToRoman(Math.Abs(num))}";
 
             string result = string.Empty;
