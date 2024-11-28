@@ -44,3 +44,17 @@ Console.WriteLine(r13);
 Console.WriteLine(r13.IntValue);
 Console.WriteLine(r11);
 Console.WriteLine(r12);
+
+
+Console.WriteLine(r13 != r10); // true
+
+Roman r14 = (Roman)40;
+Console.WriteLine(r14); // XL
+
+Roman r15 = (Roman)"CM"; // 900
+Console.WriteLine(r15.IntValue);
+
+//Roman r16 = 11;
+//Console.WriteLine(r16);
+
+//Roman r17 = "XVI";

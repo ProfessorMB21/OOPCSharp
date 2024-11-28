@@ -51,42 +51,13 @@ namespace OOP_WorkC_
         {
             IntValue = FromRoman(val);
         }
-        /*
-        private int FromRoman(string roman)
-        {
-            roman = roman.ToUpper();
-            int sum = 0, prev = 0;
-            bool isNegative = false;
-
-            if (roman.StartsWith("-")) { isNegative = true; }
-            
-            foreach(char c in roman)
-            {
-                if (!romanToInt.ContainsKey(c) && c != '-')
-                {
-                    throw new Exception($"Invalid Roman character: {c}");
-                }
-                if (c != '-')
-                {
-                    int curr = romanToInt[c];
-                    sum += curr <= prev ? curr : curr - 2 * prev;
-                    prev = curr;
-                }
-            }
-            
-            if (isNegative) { sum = -sum; }
-            if (ToRoman(sum) != roman) { throw new Exception($"Invalid Roman numeral: {roman}"); }
-            return sum;
-        }
-        */
 
         private int FromRoman(string roman)
         {
             roman = roman.ToUpper();
             int sum = 0, prev = 0;
-            bool isNegative = false;
-
-            if (roman.StartsWith("-")) { isNegative = true; }
+            bool isNegative = roman.StartsWith("-");
+            
             if (isNegative)
             {
                 for (int i = 1; i < roman.Length; i++)
@@ -146,5 +117,24 @@ namespace OOP_WorkC_
                 return new Roman(_this.IntValue / other.IntValue);
             } else { throw new DivideByZeroException($"Cannot divide by zero: {other}"); }
         }
+
+        public static bool operator ==(Roman _this, Roman other) => _this.IntValue == other.IntValue;
+
+        public static bool operator !=(Roman _this, Roman other) => !(_this.IntValue == other.IntValue);
+        
+        public static Roman operator ++(Roman _this) => new(_this.IntValue + 1);
+
+        public static Roman operator --(Roman _this) => new(_this.IntValue - 1);
+
+        //conversions
+        public static explicit operator Roman(int num) => new(num);
+        public static explicit operator Roman(string s) => new(s);
+
+        /*
+        public static implicit operator Roman(int num) => new Roman();
+        public static implicit operator Roman(string s)
+        {
+            return new(s);
+        }*/
     }
 }
