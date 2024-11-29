@@ -37,9 +37,9 @@ Console.WriteLine(-r4.IntValue);
 Roman r9 = new(10);
 Roman r10 = new(2);
 Console.WriteLine($"div: {(new Roman("-XXX") / new Roman(-1)).IntValue}");
-Roman r11 = new("-IV");
-Roman r12 = new(2000);
-Roman r13 = r12 + r1;
+Roman r11 = new("-IV"); // -4
+Roman r12 = new(2000);  //MM
+Roman r13 = r12 + r1;   // 1995
 Console.WriteLine(r13);
 Console.WriteLine(r13.IntValue);
 Console.WriteLine(r11);
@@ -58,3 +58,11 @@ Console.WriteLine(r15.IntValue);
 //Console.WriteLine(r16);
 
 //Roman r17 = "XVI";
+
+string roman = r12; // "MM"
+Console.WriteLine(roman);
+
+int iRoman = (int)r11;  // -4
+Console.WriteLine(iRoman);
+int iRoman2 = (int)r13;
+Console.WriteLine(iRoman2);

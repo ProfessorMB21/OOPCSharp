@@ -129,12 +129,9 @@ namespace OOP_WorkC_
         //conversions
         public static explicit operator Roman(int num) => new(num);
         public static explicit operator Roman(string s) => new(s);
-
-        /*
-        public static implicit operator Roman(int num) => new Roman();
-        public static implicit operator Roman(string s)
-        {
-            return new(s);
-        }*/
+        //public static explicit operator int(Roman _this) => _this.IntValue;           // we'll explicitly convert to string
+        public static explicit operator string(Roman _this) => _this.ToString();        // while implicitly converting to int
+        //public static implicit operator string(Roman _this) => _this.ToString();      // to avoid ambiguous conversions
+        public static implicit operator int(Roman _this) => _this.IntValue;
     }
 }
