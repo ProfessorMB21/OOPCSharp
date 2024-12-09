@@ -104,6 +104,15 @@ namespace OOP_WorkC_
 
         public override string ToString() => ToRoman(IntValue);
 
+        public override bool Equals(object? obj)
+        {
+            if (obj is Roman other)
+            {
+                return IntValue == other.IntValue;
+            }
+            return false;
+        }
+
         public static Roman operator +(Roman _this, Roman other) => new Roman(_this.IntValue + other.IntValue);
 
         public static Roman operator -(Roman _this, Roman other) => new Roman(_this.IntValue - other.IntValue);
