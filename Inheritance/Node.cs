@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Inheritance
 {
-    internal class Node
+    public class Node
     {
     }
 }

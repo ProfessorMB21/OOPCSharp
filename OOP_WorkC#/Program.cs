@@ -59,10 +59,18 @@ Console.WriteLine(r15.IntValue);
 
 //Roman r17 = "XVI";
 
-string roman = r12; // "MM"
+string roman = (string)r12; // "MM"
 Console.WriteLine(roman);
 
 int iRoman = (int)r11;  // -4
 Console.WriteLine(iRoman);
 int iRoman2 = (int)r13;
 Console.WriteLine(iRoman2);
+
+Roman r16 = new(1804);
+Roman r17 = new("MCMIV");
+
+Console.WriteLine((string)r16);
+Console.WriteLine((int)r17);
+Console.WriteLine(r16.Equals(new Roman("MDCCCIV")));
+Console.WriteLine(r17.Equals(r16));
