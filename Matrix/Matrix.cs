@@ -16,21 +16,27 @@ namespace Matrix
         IMatrix<T> Transpose { get; }
     }
 
+    class InvalidDimensionsException : Exception
+    {
+        private int _invalidRowValue;
+        private int _invalidColumnValue;
+        public InvalidDimensionsException(int row, int col)
+            : base($"{nameof(row)}={row} and {nameof(col)}={col} cannot be less than or equal to zero.")
+        {
+            _invalidColumnValue= col;
+            _invalidRowValue= row;
+        }
+    }
+
     public class Matrix<T> : IMatrix<T> where T : INumber<T>
     {
         private T[,] _array;
         public int Rows => _array.GetLength(0);
         public int Columns => _array.GetLength(1);
-
-        IMatrix<T> IMatrix<T>.Transpose => throw new NotImplementedException();
-
         public Matrix() { _array = new T[0, 0]; }
         public Matrix(int rows, int columns)
         {
-            if (rows <= 0 || columns <= 0)
-            {
-                throw new ArgumentOutOfRangeException($"{(rows <= 0 ? nameof(rows) : nameof(columns))} out of range.");
-            }
+            if (rows <= 0 || columns <= 0) throw new InvalidDimensionsException(rows, columns);
             _array = new T[rows, columns];
         }
         public Matrix(T[,] array)
@@ -108,180 +114,67 @@ namespace Matrix
                 _array[row, col] = value;
             }
         }
-        // Todo: find another alternative
-        // int
-        private static Matrix<int>Subtract(Matrix<int> lhs, Matrix<int> rhs)
-        {
-            var result = new Matrix<int>(lhs.Rows, lhs.Columns);
-            for (int i = 0; i <= lhs.Rows; i++)
-            {
-                for (int j = 0 ; j < lhs.Columns; j++)
-                    result[i, j] = lhs[i, j] - rhs[i, j];
-            }
-            return result;
-        }
-        private static Matrix<int>Add(Matrix<int> lhs, Matrix<int> rhs)
-        {
-            var result = new Matrix<int>(lhs.Rows, lhs.Columns);
-            for (int i = 0; i <= lhs.Rows; i++)
-            {
-                for (int j = 0; j < lhs.Columns; j++)
-                    result[i, j] = lhs[i, j] + rhs[i, j];
-            }
-            return result;
-        }
-        private static Matrix<int>ProductByScalar(Matrix<int> lhs, int k)
-        {
-            var result = new Matrix<int>(lhs.Rows, lhs.Columns);
-            for (int i = 0; i <= lhs.Rows; i++)
-            {
-                for (int j = 0; j < lhs.Columns;  ++j)
-                    result[i, j] = lhs[i, j] * k;
-            }
-            return result;
-        }
-        private static Matrix<int>Product(Matrix<int> lhs, Matrix<int> rhs)
-        {
-            var n = lhs.Rows;
-            var m1 = lhs.Columns;
-            var m2 = rhs.Rows;
-            var p = rhs.Columns;
-            // nxm1 * m2xp = nxp (m1 === m2)
-
-            var result = new Matrix<int>(lhs.Rows, lhs.Columns);
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; ++j < p; j++)
-                {
-                    var sum = 0;
-                    for (int k = 0; k < m1; k++)
-                    {
-                        sum += lhs[i, k] * rhs[k, j];
-                    }
-                    result[i, j] = sum;
-                }
-            }
-            return result;
-        }
-        private static Matrix<int> QuotientByScalar(Matrix<int> lhs, int k)
-        {
-            var result = new Matrix<int>(lhs.Rows, lhs.Columns);
-            for (int i = 0; i < lhs.Rows; i++)
-            {
-                for (int j = 0; j < lhs.Columns; j++)
-                    result[i, j] = lhs[i, j] / k;
-            }
-            return result;
-        }
-
-        // double
-        private static Matrix<double>Subtract(Matrix<double> lhs, Matrix<double> rhs)
-        {
-            var result = new Matrix<double>(lhs.Rows, lhs.Columns);
-            for (int i = 0; i <= lhs.Rows; i++)
-            {
-                for (int j = 0 ; j < lhs.Columns; j++)
-                    result[i, j] = lhs[i, j] - rhs[i, j];
-            }
-            return result;
-        }
-        private static Matrix<double>Add(Matrix<double> lhs, Matrix<double> rhs)
-        {
-            var result = new Matrix<double>(lhs.Rows, lhs.Columns);
-            for (int i = 0; i <= lhs.Rows; i++)
-            {
-                for (int j = 0; j < lhs.Columns; j++)
-                    result[i, j] = lhs[i, j] + rhs[i, j];
-            }
-            return result;
-        }
-        private static Matrix<double>ProductByScalar(Matrix<double> lhs, double k)
-        {
-            var result = new Matrix<double>(lhs.Rows, lhs.Columns);
-            for (int i = 0; i <= lhs.Rows; i++)
-            {
-                for (int j = 0; j < lhs.Columns;  ++j)
-                    result[i, j] = lhs[i, j] * k;
-            }
-            return result;
-        }
-        private static Matrix<double> Product(Matrix<double> lhs, Matrix<double> rhs)
-        {
-            var n = lhs.Rows;
-            var m1 = lhs.Columns;
-            var m2 = rhs.Rows;
-            var p = rhs.Columns;
-            // nxm1 * m2xp = nxp (m1 === m2)
-
-            var result = new Matrix<double>(lhs.Rows, lhs.Columns);
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; ++j < p; j++)
-                {
-                    var sum = 0.0;
-                    for (int k = 0; k < m1; k++)
-                    {
-                        sum += lhs[i, k] * rhs[k, j];
-                    }
-                    result[i, j] = sum;
-                }
-            }
-            return result;
-        }
-        private static Matrix<double>QuotientByScalar(Matrix<double> lhs, double k)
-        {
-            var result = new Matrix<double>(lhs.Rows, lhs.Columns);
-            for (int i = 0; i < lhs.Rows; i++)
-            {
-                for (int j = 0; j < lhs.Columns; j++)
-                    result[i, j] = lhs[i, j] / k;
-            }
-            return result;
-        }
 
         public static Matrix<T> operator +(Matrix<T> _this, Matrix<T> other)
         {
             if (_this is null || other is null || _this.Columns != other.Columns || _this.Rows != other.Rows)
                 throw new ArgumentException("Matrices must have the same dimensions for addition.");
 
-            var result = new Matrix<T>(_this.Rows, _this.Columns);
+            Matrix<T> result = new(_this.Rows, _this.Columns);
             for (int i = 0; i <= _this.Rows; i++)
-            {
                 for (int j = 0; j < other.Columns; j++)
-                    result[i, j] = _this[i, j] + other[j, i];
-            }
+                    result[i, j] = _this[i, j] + other[i, j];
             return result;
         }
-
-        private static Matrix<T> Add(Matrix<T> @this, Matrix<T> other)
-        {
-            return new();
-        }
-
         public static Matrix<T> operator -(Matrix<T> _this, Matrix<T> other)
         {
             if (_this is null || other is null || _this.Columns != other.Columns || _this.Rows != other.Rows)
                 throw new ArgumentException("Matrices must have the same dimensions for addition.");
 
             Matrix<T> result = new(_this.Rows, _this.Columns);
-
+            for (int i = 0; i < _this.Rows; i++)
+                for (int j = 0; j < _this.Columns; j++)
+                    result[i, j] = _this[i, j] - other[i, j];
             return result;
         }
         public static Matrix<T> operator /(Matrix<T> _this, T scalar)
         {
-            if (_this is null ||)
+            if (_this is null || scalar == T.Zero)
+                throw new ArgumentException($"Value {((T.IsZero(scalar) == true) ? nameof(scalar) : nameof(_this))} cannot be null or have a zero value of type {typeof(T)}.");
+            //if (scalar == T.Zero) throw new DivideByZeroException($"{nameof(scalar)} cannot be zero. Division by zero not allowed.");
+
+            Matrix<T> result = new(_this.Rows, _this.Columns);
+            for (int i = 0; i < _this.Rows; i++)
+                for (int j = 0; j < _this.Columns; j++)
+                    result[i, j] = _this[i, j] / scalar;
+            return result;
         }
         public static Matrix<T> operator *(Matrix<T> _this, T scalar)
         {
+            if (_this is null) throw new ArgumentException($"Value {nameof(_this)} cannot be null.");
+            Matrix<T> result = new(_this.Rows, _this.Columns);
 
+            for (int i = 0; i < _this.Rows; i++)
+                for (int j = 0; j < _this.Columns; j++)
+                    result[i, j] = _this[i, j] * scalar;
+            return result;
         }
         public static Matrix<T> operator *(Matrix<T> _this, Matrix<T> other)
         {
             if (_this is null || other is null || _this.Columns != other.Columns || _this.Rows != other.Rows)
                 throw new ArgumentException("Matrices must have the same dimensions for addition.");
 
-            Matrix<T> result = new(_this.Rows, _this.Columns);
-
+            var n = _this.Rows;
+            var m1 = _this.Columns;
+            var m2 = other.Rows;
+            var p = other.Columns;
+            // nxm1 * m2xp = nxp (m1 === m2)
+            
+            Matrix<T> result = new(_this.Rows, other.Columns);
+            for (int i = 0; i < n; i++)
+                for (int j = 0; ++j < p; j++)
+                    for (int k = 0; k < m1; k++)
+                        result[i, j] += _this[i, k] * other[k, j];
             return result;
         }
     }
