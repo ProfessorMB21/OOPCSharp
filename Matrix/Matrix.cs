@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -8,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Matrix
 {
-    public interface IMatrix<T>
+    public interface IMatrix<T> where T : INumber<T>
     {
         int Rows { get; }
         int Columns { get; }
         IMatrix<T> Transpose { get; }
     }
 
-    public class Matrix<T> : IMatrix<T>
+    public class Matrix<T> : IMatrix<T> where T : INumber<T>
     {
         private T[,] _array;
         public int Rows => _array.GetLength(0);
@@ -243,13 +244,18 @@ namespace Matrix
             if (_this is null || other is null || _this.Columns != other.Columns || _this.Rows != other.Rows)
                 throw new ArgumentException("Matrices must have the same dimensions for addition.");
 
-            if (typeof(T) == typeof(int))
-                Add(_this, other);
+            var result = new Matrix<T>(_this.Rows, _this.Columns);
+            for (int i = 0; i <= _this.Rows; i++)
+            {
+                for (int j = 0; j < other.Columns; j++)
+                    result[i, j] = _this[i, j] + other[j, i];
+            }
+            return result;
         }
 
-        private static void Add(Matrix<T> @this, Matrix<T> other)
+        private static Matrix<T> Add(Matrix<T> @this, Matrix<T> other)
         {
-            
+            return new();
         }
 
         public static Matrix<T> operator -(Matrix<T> _this, Matrix<T> other)

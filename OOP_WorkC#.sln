@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComplexNumbers", "ComplexNu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inheritance", "Inheritance\Inheritance.csproj", "{313435F5-C920-40F4-A2CA-4F8A6B830FE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Matrix", "Matrix\Matrix.csproj", "{9843B439-B143-473A-8E4D-36246D78332A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Matrix", "Matrix\Matrix.csproj", "{9843B439-B143-473A-8E4D-36246D78332A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vectors", "Vectors\Vectors.csproj", "{32AE5AA5-0509-4105-BB3C-F178A10CA171}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{9843B439-B143-473A-8E4D-36246D78332A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9843B439-B143-473A-8E4D-36246D78332A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9843B439-B143-473A-8E4D-36246D78332A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32AE5AA5-0509-4105-BB3C-F178A10CA171}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32AE5AA5-0509-4105-BB3C-F178A10CA171}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32AE5AA5-0509-4105-BB3C-F178A10CA171}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32AE5AA5-0509-4105-BB3C-F178A10CA171}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
