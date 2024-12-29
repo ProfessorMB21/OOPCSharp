@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -23,8 +24,30 @@ namespace Matrix
         public InvalidDimensionsException(int row, int col)
             : base($"{nameof(row)}={row} and {nameof(col)}={col} cannot be less than or equal to zero.")
         {
-            _invalidColumnValue= col;
-            _invalidRowValue= row;
+            _invalidColumnValue = col;
+            _invalidRowValue = row;
+        }
+    }
+    class IncompatibleDimensionsException : Exception
+    {
+        private int _iRowValue1;
+        private int _iRowValue2;
+        private int _iColValue1;
+        private int _iColValue2;
+        public IncompatibleDimensionsException(int row1, int col1, int row2, int col2)
+            : base($"Dimensions {nameof(row1)} and {nameof(col2)} are not compatible to {nameof(row2)} and {nameof(col2)} ")
+        {
+            _iRowValue1 = row1;
+            _iColValue1 = col1;
+            _iRowValue2 = row2;
+            _iColValue2 = col2;
+        }
+        public IncompatibleDimensionsException(string message) : base(message) { }
+        public IncompatibleDimensionsException(int row, int col)
+            : base($"Dimensions, {nameof(row)}={row} and {nameof(col)}={col} are not compatible for matrix multiplication.")
+        {
+            _iRowValue2 = col;
+            _iColValue1 = row;
         }
     }
 
@@ -33,6 +56,7 @@ namespace Matrix
         private T[,] _array;
         public int Rows => _array.GetLength(0);
         public int Columns => _array.GetLength(1);
+        public IMatrix<T> Transpose => GetTranspose();
         public Matrix() { _array = new T[0, 0]; }
         public Matrix(int rows, int columns)
         {
@@ -56,7 +80,8 @@ namespace Matrix
             }
             return sb.ToString();
         }
-        public override string ToString()
+        public override string ToString() => PrettyPrint();
+            /*
         {
             StringBuilder sb = new();
             for (int i = 0; i < Rows; i++)
@@ -64,6 +89,7 @@ namespace Matrix
                     sb.Append($"{this[i, j]} ");
             return sb.ToString();
         }
+            */
         public override bool Equals(object? obj)
         {
             if (obj is Matrix<T> other && Rows == other.Rows && Columns == other.Columns)
@@ -86,18 +112,13 @@ namespace Matrix
             }
             return hash;
         }
-        public IMatrix<T> Transpose
+        public Matrix<T> GetTranspose()
         {
-            get
-            {
-                var transposed_matrix = new Matrix<T>(Rows, Columns);
-                for (int i = 0; i < Rows; i++)
-                {
-                    for (int j = 0; j < Columns; j++)
-                        transposed_matrix[j, i] = this[i, j];
-                }
-                return transposed_matrix;
-            }
+            Matrix<T> transposed_matrix = new(Rows, Columns);
+            for (int i = 0; i < Rows; i++)
+                for (int j = 0; j < Columns; j++)
+                    transposed_matrix[j, i] = _array[i, j];
+            return transposed_matrix;
         }
         public T this[int row, int col]
         {
@@ -118,10 +139,10 @@ namespace Matrix
         public static Matrix<T> operator +(Matrix<T> _this, Matrix<T> other)
         {
             if (_this is null || other is null || _this.Columns != other.Columns || _this.Rows != other.Rows)
-                throw new ArgumentException("Matrices must have the same dimensions for addition.");
+                throw new IncompatibleDimensionsException("Matrices must have the same dimensions for addition.");
 
             Matrix<T> result = new(_this.Rows, _this.Columns);
-            for (int i = 0; i <= _this.Rows; i++)
+            for (int i = 0; i < _this.Rows; i++)
                 for (int j = 0; j < other.Columns; j++)
                     result[i, j] = _this[i, j] + other[i, j];
             return result;
@@ -129,7 +150,7 @@ namespace Matrix
         public static Matrix<T> operator -(Matrix<T> _this, Matrix<T> other)
         {
             if (_this is null || other is null || _this.Columns != other.Columns || _this.Rows != other.Rows)
-                throw new ArgumentException("Matrices must have the same dimensions for addition.");
+                throw new IncompatibleDimensionsException("Matrices must have the same dimensions for addition.");
 
             Matrix<T> result = new(_this.Rows, _this.Columns);
             for (int i = 0; i < _this.Rows; i++)
@@ -161,20 +182,21 @@ namespace Matrix
         }
         public static Matrix<T> operator *(Matrix<T> _this, Matrix<T> other)
         {
-            if (_this is null || other is null || _this.Columns != other.Columns || _this.Rows != other.Rows)
-                throw new ArgumentException("Matrices must have the same dimensions for addition.");
-
-            var n = _this.Rows;
-            var m1 = _this.Columns;
-            var m2 = other.Rows;
-            var p = other.Columns;
-            // nxm1 * m2xp = nxp (m1 === m2)
+            if (_this is null || other is null || _this.Columns != other.Rows)
+                throw new IncompatibleDimensionsException(other.Rows, _this.Columns);
             
             Matrix<T> result = new(_this.Rows, other.Columns);
-            for (int i = 0; i < n; i++)
-                for (int j = 0; ++j < p; j++)
-                    for (int k = 0; k < m1; k++)
+            for (int i = 0; i < result.Rows; i++)
+            {
+                for (int j = 0; j < result.Columns; j++)
+                {
+                    result[i, j] = T.Zero;
+                    for (int k = 0; k < _this.Columns; k++)
+                    {
                         result[i, j] += _this[i, k] * other[k, j];
+                    }
+                }
+            }
             return result;
         }
     }
