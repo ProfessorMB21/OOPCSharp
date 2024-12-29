@@ -6,7 +6,7 @@ Console.WriteLine(m1[1,1]);
 
 int[,] matrix2x2 = {
     { 1, 2 },
-    { 5, 3 }
+    { 2, 1 }
 };
 int[,] mat2x2 = {
     { 7, 9 },
@@ -36,7 +36,8 @@ Console.WriteLine(m2*m2);
 Matrix<int> m3 = m3x3 * m3x3;
 Console.WriteLine(m3);
 
-Console.WriteLine(m2.Transpose);
+Matrix<int> transpose_m2 = (Matrix<int>)m2.Transpose;
+Console.WriteLine(transpose_m2.PrettyPrint());
 
 Matrix<int> m2_ = new(mat2x2);
 Matrix<int> m4 = m2 * m2_;

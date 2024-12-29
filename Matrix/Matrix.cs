@@ -80,8 +80,7 @@ namespace Matrix
             }
             return sb.ToString();
         }
-        public override string ToString() => PrettyPrint();
-            /*
+        public override string ToString() //=> PrettyPrint();
         {
             StringBuilder sb = new();
             for (int i = 0; i < Rows; i++)
@@ -89,7 +88,6 @@ namespace Matrix
                     sb.Append($"{this[i, j]} ");
             return sb.ToString();
         }
-            */
         public override bool Equals(object? obj)
         {
             if (obj is Matrix<T> other && Rows == other.Rows && Columns == other.Columns)
@@ -150,7 +148,7 @@ namespace Matrix
         public static Matrix<T> operator -(Matrix<T> _this, Matrix<T> other)
         {
             if (_this is null || other is null || _this.Columns != other.Columns || _this.Rows != other.Rows)
-                throw new IncompatibleDimensionsException("Matrices must have the same dimensions for addition.");
+                throw new IncompatibleDimensionsException("Matrices must have the same dimensions for subtraction.");
 
             Matrix<T> result = new(_this.Rows, _this.Columns);
             for (int i = 0; i < _this.Rows; i++)
