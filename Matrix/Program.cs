@@ -43,3 +43,35 @@ Matrix<int> m2_ = new(mat2x2);
 Matrix<int> m4 = m2 * m2_;
 Console.WriteLine(m2_);
 Console.WriteLine(m4);
+
+////////////// square matrix //////////////
+
+int[,] sq_matrixArray =
+{
+    {1, 2, 1 },
+    {0, 3, 4 },
+    {3, 1, 4 }
+};
+
+SquareMatrix<int> square = new(sq_matrixArray);
+Console.WriteLine(square);
+Console.WriteLine("Det: " + square.Determinant);
+
+int[,] arr22 =
+{
+    {4, 1 },
+    {5, 2}
+};
+
+SquareMatrix<int> square2 = new(arr22);
+Console.WriteLine(square2);
+Console.WriteLine(square2.Determinant);
+
+double[,] doubles =
+{ 
+    { 2.7, 1}, 
+    { 5.6, -6} 
+};
+
+Console.WriteLine(new SquareMatrix<double>(doubles).Determinant);
+Console.WriteLine();
